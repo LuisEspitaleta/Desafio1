@@ -5,10 +5,16 @@ using namespace std;
 // Función para crear una matriz cuadrada dinámica
 int** crearMatrizCuadrada(int &tamano) {
     int** matriz = new int*[tamano]; // Reserva de memoria para las filas
+
+    int indice = 1;
     for (int i = 0; i < tamano; ++i) {
         matriz[i] = new int[tamano]; // Reserva de memoria para las columnas
         for (int j = 0; j < tamano; ++j) {
-            matriz[i][j] = i * tamano + j + 1; // Llenado automática
+            if ((j == tamano / 2) && (i == tamano / 2) ) {
+                matriz[i][j] = 0;
+            } else {
+                matriz[i][j] = indice ++;
+            }
         }
     }
     return matriz;
@@ -46,8 +52,9 @@ void liberarMemoria(int*** matriz, int &size, int* tamanos) {
     delete[] matriz;
 }
 
-int compararPosicionMatrices(int** matrizA, int** matrizB, int tamano, int i, int j) {
+int compararPosicionMatrices(int** matrizA, int** matrizB, int i, int j) {
     // Verificar si la posición (i, j) de la matriz A es mayor que la de la matriz B
+    cout << "comparando " << matrizA[i][j] << " con " << matrizB[i][j] << endl;
     if (matrizA[i][j] > matrizB[i][j]) {
         return 1; // Devolver 1 si matriz A es mayor
     }
@@ -72,6 +79,7 @@ int main() {
 
     int tamano;
     int *ptrTamano = &tamano;
+
     for (int i = 0; i < *ptrCantidadMatrices; ++i) {
         cout << "Ingrese el tamaio de la matriz cuadrada: ";
         cin >> *ptrTamano;
@@ -91,10 +99,23 @@ int main() {
     }
 
     int x = 1;
-    int y = 1;
-    int resultado = compararPosicionMatrices(arregloDeMatrices[0], arregloDeMatrices[1], tamano, x, y);
-    cout << "\nComparación en la posición (" << x << ", " << y << "): " << resultado << endl;
+    int y = 2;
+    int condicion = 1;
+    //int resultado = compararPosicionMatrices(arregloDeMatrices[0], arregloDeMatrices[1], x, y);
 
+    int resultado;
+    int** matrizB = arregloDeMatrices[1];
+    int tamani2 = sizeof(matrizB[0]);
+    int *ptrTamani2 = &tamani2;
+    for (int i = 0; i < 4; ++i) {
+        int resultado = compararPosicionMatrices(arregloDeMatrices[0], matrizB, x, y);
+        cout << "\nComparación 1 en la posición (" << x << ", " << y << "): " << resultado << endl;
+        imprimirMatriz(matrizB, tamanos[1]);
+        if (resultado != condicion) {
+            matrizB = rotarMatrizCuadrada(matrizB, tamanos[1]);
+
+        }
+    }
 
     // Liberar la memoria de matrices
     liberarMemoria(arregloDeMatrices, *ptrCantidadMatrices, tamanos);
