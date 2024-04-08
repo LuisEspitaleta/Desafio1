@@ -36,6 +36,14 @@ int** rotarMatrizCuadrada(int** matriz, int tamano) {
     return matrizRotada;
 }
 
+void liberarMemoria(int** matriz, int &size) {
+    for (int i = 0; i < size; ++i) {
+        delete[] matriz[i];
+    }
+    delete[] matriz;
+}
+
+
 int main() {
     int tamano;
     int *ptrTamano = &tamano;
@@ -57,12 +65,8 @@ int main() {
     imprimirMatriz(matrizRotada, tamano);
 
     // Liberar la memoria de ambas matrices
-    for (int i = 0; i < tamano; ++i) {
-        delete[] miMatriz[i];
-        delete[] matrizRotada[i];
-    }
-    delete[] miMatriz;
-    delete[] matrizRotada;
+    liberarMemoria(miMatriz, *ptrTamano);
+    liberarMemoria(matrizRotada, *ptrTamano);
 
     return 0;
 }
