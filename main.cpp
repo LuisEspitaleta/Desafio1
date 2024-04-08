@@ -25,7 +25,7 @@ void imprimirMatriz(int** matriz, int &tamano) {
 }
 
 // Función para rotar la matriz en sentido horario (90 grados)
-int** rotarMatrizCuadrada(int** matriz, int tamano) {
+int** rotarMatrizCuadrada(int** matriz, int &tamano) {
     int** matrizRotada = new int*[tamano];
     for (int i = 0; i < tamano; ++i) {
         matrizRotada[i] = new int[tamano];
@@ -36,8 +36,11 @@ int** rotarMatrizCuadrada(int** matriz, int tamano) {
     return matrizRotada;
 }
 
-void liberarMemoria(int** matriz, int &size) {
+void liberarMemoria(int*** matriz, int &size, int* tamanos) {
     for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < tamanos[i]; ++j) {
+            delete[] matriz[i][j];
+        }
         delete[] matriz[i];
     }
     delete[] matriz;
@@ -45,28 +48,42 @@ void liberarMemoria(int** matriz, int &size) {
 
 
 int main() {
+
+    int cantidadMatrices;
+    int *ptrCantidadMatrices = &cantidadMatrices;
+    cout << "Ingrese la cantidad de matrices que desea crear: ";
+    cin >> *ptrCantidadMatrices;
+
+
+    int*** arregloDeMatrices = new int**[*ptrCantidadMatrices];
+    int* tamanos = new int[cantidadMatrices];
+
     int tamano;
     int *ptrTamano = &tamano;
-    cout << "Ingrese el tamaio de la matriz cuadrada: ";
-    cin >> *ptrTamano;
+    for (int i = 0; i < *ptrCantidadMatrices; ++i) {
+        cout << "Ingrese el tamaio de la matriz cuadrada: ";
+        cin >> *ptrTamano;
+        tamanos[i] = *ptrTamano;
 
-    // Crear la matriz llamando la funcion crearMatrizCuadrada()
-    int** miMatriz = crearMatrizCuadrada(*ptrTamano);
+        cout << "Matriz " << i + 1 << ":\n";
+        // Crear la matriz llamando la funcion crearMatrizCuadrada()
+        int** miMatriz = crearMatrizCuadrada(*ptrTamano);
+        arregloDeMatrices[i] = miMatriz;
 
-    cout << "Matriz original:\n";
-    // Imprimir la matriz llamando la funcion imprimirMatriz()
-    imprimirMatriz(miMatriz, *ptrTamano);
+        cout << "Matriz original:\n";
+        // Imprimir la matriz llamando la funcion imprimirMatriz()
+        imprimirMatriz(miMatriz, *ptrTamano);
 
-    // Rotar la matriz y obtener la matriz rotada
-    int** matrizRotada = rotarMatrizCuadrada(miMatriz, tamano);
+        // Rotar la matriz y obtener la matriz rotada
+        int** matrizRotada = rotarMatrizCuadrada(miMatriz, *ptrTamano);
 
-    // Imprimir la matriz rotada
-    cout << "Matriz rotada:\n";
-    imprimirMatriz(matrizRotada, tamano);
+        // Imprimir la matriz rotada
+        cout << "Matriz rotada:\n";
+        imprimirMatriz(matrizRotada, *ptrTamano);
 
-    // Liberar la memoria de ambas matrices
-    liberarMemoria(miMatriz, *ptrTamano);
-    liberarMemoria(matrizRotada, *ptrTamano);
-
+        // Liberar la memoria de ambas matrices
+    }
+    liberarMemoria(arregloDeMatrices, *ptrCantidadMatrices, tamanos);
+    delete[] tamanos;
     return 0;
 }
