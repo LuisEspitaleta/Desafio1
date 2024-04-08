@@ -46,6 +46,18 @@ void liberarMemoria(int*** matriz, int &size, int* tamanos) {
     delete[] matriz;
 }
 
+int compararPosicionMatrices(int** matrizA, int** matrizB, int tamano, int i, int j) {
+    // Verificar si la posición (i, j) de la matriz A es mayor que la de la matriz B
+    if (matrizA[i][j] > matrizB[i][j]) {
+        return 1; // Devolver 1 si matriz A es mayor
+    }
+    // Verificar si la posición (i, j) de la matriz A es menor que la de la matriz B
+    else if (matrizA[i][j] < matrizB[i][j]) {
+        return -1; // Devolver -1 si matriz A es menor
+    }
+    // Si ninguna de las condiciones anteriores se cumple, significa que las posiciones son iguales
+    return 0;
+}
 
 int main() {
 
@@ -75,14 +87,16 @@ int main() {
         imprimirMatriz(miMatriz, *ptrTamano);
 
         // Rotar la matriz y obtener la matriz rotada
-        int** matrizRotada = rotarMatrizCuadrada(miMatriz, *ptrTamano);
-
-        // Imprimir la matriz rotada
-        cout << "Matriz rotada:\n";
-        imprimirMatriz(matrizRotada, *ptrTamano);
-
-        // Liberar la memoria de ambas matrices
+        //int** matrizRotada = rotarMatrizCuadrada(miMatriz, *ptrTamano);
     }
+
+    int x = 1;
+    int y = 1;
+    int resultado = compararPosicionMatrices(arregloDeMatrices[0], arregloDeMatrices[1], tamano, x, y);
+    cout << "\nComparación en la posición (" << x << ", " << y << "): " << resultado << endl;
+
+
+    // Liberar la memoria de matrices
     liberarMemoria(arregloDeMatrices, *ptrCantidadMatrices, tamanos);
     delete[] tamanos;
     return 0;
