@@ -73,7 +73,6 @@ int main() {
     cout << "Ingrese la cantidad de matrices que desea crear: ";
     cin >> *ptrCantidadMatrices;
 
-
     int*** arregloDeMatrices = new int**[*ptrCantidadMatrices];
     int* tamanos = new int[cantidadMatrices];
 
@@ -100,20 +99,28 @@ int main() {
 
     int x = 1;
     int y = 2;
-    int condicion = 1;
+    int condicion = -1;
     //int resultado = compararPosicionMatrices(arregloDeMatrices[0], arregloDeMatrices[1], x, y);
 
     int resultado;
-    int** matrizB = arregloDeMatrices[1];
-    int tamani2 = sizeof(matrizB[0]);
-    int *ptrTamani2 = &tamani2;
-    for (int i = 0; i < 4; ++i) {
-        int resultado = compararPosicionMatrices(arregloDeMatrices[0], matrizB, x, y);
-        cout << "\nComparación 1 en la posición (" << x << ", " << y << "): " << resultado << endl;
-        imprimirMatriz(matrizB, tamanos[1]);
-        if (resultado != condicion) {
-            matrizB = rotarMatrizCuadrada(matrizB, tamanos[1]);
 
+
+    for (int j = 0; j < *ptrCantidadMatrices - 1; ++j) {
+        int** matrizB = arregloDeMatrices[tamanos[j+1]];
+        cout << "\n\nComparando matriz" << j+1 << " con matriz" << j+2 << endl;
+        cout << "tamanio del arreglo B" << (j+1)  << " es " << tamanos[j+1] << endl;
+        for (int i = 0; i < 4; ++i) {
+            int resultado = compararPosicionMatrices(arregloDeMatrices[0], matrizB, x, y);
+            cout << "\nComparación 1 en la posición (" << x << ", " << y << "): " << resultado << endl;
+            cout << "el tamanio B" << (j+1)  << " es " << tamanos[j+1] << endl;
+            imprimirMatriz(matrizB, tamanos[j+1]);
+
+            if (resultado != condicion) {
+                matrizB = rotarMatrizCuadrada(matrizB, tamanos[j+1]);
+
+            }else {
+                break;
+            }
         }
     }
 
