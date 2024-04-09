@@ -146,8 +146,29 @@ int main() {
             }
         }
         if (finalizar) {
+            cout << "\nLa llave x(";
+            for (int i = 0; i < *ptrCantidadMatrices+1; ++i) {
+                cout << llave[i] << ",";
+            }
+            cout << ") no abre la cerradura K(";
+            for (int i = 0; i < *ptrCantidadMatrices; ++i) {
+                cout << cerradura[i] << ",";
+            }
+            cout << ")\n";
             break;
         }
+    }
+
+    if (!finalizar) {
+        cout << "\nLa llave x(";
+        for (int i = 0; i < *ptrCantidadMatrices+1; ++i) {
+            cout << llave[i] << ",";
+        }
+        cout << ") Abrio con exito la cerradura K(";
+        for (int i = 0; i < *ptrCantidadMatrices; ++i) {
+            cout << cerradura[i] << ",";
+        }
+        cout << ")\n";
     }
 
     // Liberar la memoria de matrices
