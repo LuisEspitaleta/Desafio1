@@ -52,14 +52,14 @@ void liberarMemoria(int*** matriz, int &size, int* tamanos) {
     delete[] matriz;
 }
 
-int compararPosicionMatrices(int** matrizA, int** matrizB, int i, int j) {
+int compararPosicionMatrices(int** matrizA, int** matrizB, int *llave) {
     // Verificar si la posición (i, j) de la matriz A es mayor que la de la matriz B
-    cout << "comparando " << matrizA[i][j] << " con " << matrizB[i][j] << endl;
-    if (matrizA[i][j] > matrizB[i][j]) {
+    cout << "comparando " << matrizA[llave[0]][llave[1]] << " con " << matrizB[llave[0]][llave[1]] << endl;
+    if (matrizA[llave[0]][llave[1]] > matrizB[llave[0]][llave[1]]) {
         return 1; // Devolver 1 si matriz A es mayor
     }
     // Verificar si la posición (i, j) de la matriz A es menor que la de la matriz B
-    else if (matrizA[i][j] < matrizB[i][j]) {
+    else if (matrizA[llave[0]][llave[1]] < matrizB[llave[0]][llave[1]]) {
         return -1; // Devolver -1 si matriz A es menor
     }
     // Si ninguna de las condiciones anteriores se cumple, significa que las posiciones son iguales
@@ -68,42 +68,53 @@ int compararPosicionMatrices(int** matrizA, int** matrizB, int i, int j) {
 
 int main() {
 
-    int tamanioLlave, tamanioCerradura;
-    cout << "Ingrese El tamaño de la cerradura";
-    cin >> tamanioCerradura;
-    int *cerradura = new int[tamanioCerradura];
-
-    // Llenar el array preguntando al usuario por los valores
-    for (int i = 0; i < tamanioCerradura; ++i) {
-        cout << "Ingrese el valor para cerradura[" << i << "]: ";
-        cin >> cerradura[i];
-    }
-    int *llave[tamanioLlave];
-
+    int tamanioLlave, tamanioCerradura, valorCerradura, valorLlave;
+    int *ptrValorCerradura = &valorCerradura;
+    int *ptrValorLlave = &valorLlave;
     int cantidadMatrices;
     int *ptrCantidadMatrices = &cantidadMatrices;
-    cout << "Ingrese la cantidad de matrices que desea crear: ";
+    cout << "Ingrese El tamaio de la cerradura:";
     cin >> *ptrCantidadMatrices;
+    int *cerradura = new int[*ptrCantidadMatrices];
+
+    // Llenar el array preguntando al usuario por los valores la cerradura X
+    for (int i = 0; i < *ptrCantidadMatrices; ++i) {
+        do {
+            cout << "Ingrese el valor para cerradura[" << i+1 << "]: ";
+            cin >> *ptrValorCerradura;
+            cerradura[i] = *ptrValorCerradura;
+        } while(*ptrValorCerradura % 2 == 0 || (*ptrValorCerradura < 3));
+    }
+    cout << "\n";
+    int *llave = new int[*ptrCantidadMatrices+1];
+    // Llenar el array preguntando al usuario por los valores de la clave K
+    for (int i = 0; i < *ptrCantidadMatrices+1; ++i) {
+        if (i > 1) {
+            do {
+                cout << "Ingrese el valor para la llave[" << i+1 << "]: ";
+                cin >> *ptrValorLlave;
+                llave[i] = *ptrValorLlave;
+            } while (*ptrValorLlave > 1 || *ptrValorLlave < -1);
+        }else {
+            cout << "Ingrese el valor para la llave[" << i << "]: ";
+            cin >> *ptrValorLlave;
+            llave[i] = *ptrValorLlave;
+        }
+
+    }
+    cout << "\n";
 
     int*** arregloDeMatrices = new int**[*ptrCantidadMatrices];
-    int* tamanos = new int[cantidadMatrices];
-
-    int tamano;
-    int *ptrTamano = &tamano;
 
     for (int i = 0; i < *ptrCantidadMatrices; ++i) {
-        cout << "Ingrese el tamaio de la matriz cuadrada: ";
-        cin >> *ptrTamano;
-        tamanos[i] = *ptrTamano;
-
         cout << "Matriz " << i + 1 << ":\n";
         // Crear la matriz llamando la funcion crearMatrizCuadrada()
-        int** miMatriz = crearMatrizCuadrada(*ptrTamano);
+        int** miMatriz = crearMatrizCuadrada(cerradura[i]);
         arregloDeMatrices[i] = miMatriz;
 
         cout << "Matriz original:\n";
         // Imprimir la matriz llamando la funcion imprimirMatriz()
-        imprimirMatriz(miMatriz, *ptrTamano);
+        imprimirMatriz(miMatriz, cerradura[i]);
 
         // Rotar la matriz y obtener la matriz rotada
         //int** matrizRotada = rotarMatrizCuadrada(miMatriz, *ptrTamano);
@@ -112,24 +123,21 @@ int main() {
     int x = 4;
     int y = 3;
     int condicion = -1;
-    //int resultado = compararPosicionMatrices(arregloDeMatrices[0], arregloDeMatrices[1], x, y);
 
     int resultado;
-    //int cerradura[4] = {5, 7, 5, 9};
-    //int llave[5] = {4, 3, 1, 1, -1};
     bool finalizar = false;
     for (int j = 0; j < *ptrCantidadMatrices - 1; ++j) {
         int** matrizB = arregloDeMatrices[j+1];
         cout << "\n\nComparando matriz" << j+1 << " con matriz" << j+2 << endl;
-        cout << "tamanio del arreglo B" << (j+1)  << " es " << tamanos[j+1] << endl;
+        cout << "tamanio del arreglo B" << (j+1)  << " es " << cerradura[j+1] << endl;
         cout <<"la llavce es " << llave[j+2] << endl;
         for (int i = 0; i < 4; ++i) {
-            int resultado = compararPosicionMatrices(arregloDeMatrices[j], matrizB, x, y);
+            int resultado = compararPosicionMatrices(arregloDeMatrices[j], matrizB, llave);
             cout << "\nComparación 1 en la posición (" << x << ", " << y << "): " << resultado << endl;
-            cout << "el tamanio B" << (j+1)  << " es " << tamanos[j+1] << endl;
-            imprimirMatriz(matrizB, tamanos[j+1]);
+            cout << "el tamanio B" << (j+1)  << " es " << cerradura[j+1] << endl;
+            imprimirMatriz(matrizB, cerradura[j+1]);
             if (resultado != llave[j+2]) {
-                matrizB = rotarMatrizCuadrada(matrizB, tamanos[j+1]);
+                matrizB = rotarMatrizCuadrada(matrizB, cerradura[j+1]);
             }else {
                 break;
             }
@@ -143,7 +151,8 @@ int main() {
     }
 
     // Liberar la memoria de matrices
-    liberarMemoria(arregloDeMatrices, *ptrCantidadMatrices, tamanos);
-    delete[] tamanos;
+    liberarMemoria(arregloDeMatrices, *ptrCantidadMatrices, cerradura);
+    delete[] cerradura;
+    delete[] llave;
     return 0;
 }
