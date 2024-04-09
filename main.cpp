@@ -68,6 +68,18 @@ int compararPosicionMatrices(int** matrizA, int** matrizB, int i, int j) {
 
 int main() {
 
+    int tamanioLlave, tamanioCerradura;
+    cout << "Ingrese El tamaño de la cerradura";
+    cin >> tamanioCerradura;
+    int *cerradura = new int[tamanioCerradura];
+
+    // Llenar el array preguntando al usuario por los valores
+    for (int i = 0; i < tamanioCerradura; ++i) {
+        cout << "Ingrese el valor para cerradura[" << i << "]: ";
+        cin >> cerradura[i];
+    }
+    int *llave[tamanioLlave];
+
     int cantidadMatrices;
     int *ptrCantidadMatrices = &cantidadMatrices;
     cout << "Ingrese la cantidad de matrices que desea crear: ";
@@ -103,8 +115,8 @@ int main() {
     //int resultado = compararPosicionMatrices(arregloDeMatrices[0], arregloDeMatrices[1], x, y);
 
     int resultado;
-    int cerradura[4] = {5, 7, 5, 9};
-    int llave[5] = {4, 3, 1, 1, -1};
+    //int cerradura[4] = {5, 7, 5, 9};
+    //int llave[5] = {4, 3, 1, 1, -1};
     bool finalizar = false;
     for (int j = 0; j < *ptrCantidadMatrices - 1; ++j) {
         int** matrizB = arregloDeMatrices[j+1];
