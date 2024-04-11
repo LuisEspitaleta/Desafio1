@@ -2,7 +2,7 @@
 
 using namespace std;
 
-// Función para crear una matriz cuadrada dinámica
+// Función para crear una matriz cuadrada dinámica  Punto 1
 int** crearMatrizCuadrada(int &tamano) {
     int** matriz = new int*[tamano]; // Reserva de memoria para las filas
 
@@ -30,7 +30,7 @@ void imprimirMatriz(int** matriz, int &tamano) {
     }
 }
 
-// Función para rotar la matriz en sentido horario (90 grados)
+// Función para rotar la matriz en sentido horario (90 grados) Punto 2
 int** rotarMatrizCuadrada(int** matriz, int &tamano) {
     int** matrizRotada = new int*[tamano];
     for (int i = 0; i < tamano; ++i) {
@@ -52,7 +52,7 @@ void liberarMemoria(int*** matriz, int &size, int* tamanos) {
     delete[] matriz;
 }
 
-int compararPosicionMatrices(int** matrizA, int** matrizB, int *llave) {
+int compararPosicionMatrices(int** matrizA, int** matrizB, int* llave) {
     // Verificar si la posición (i, j) de la matriz A es mayor que la de la matriz B
     cout << "comparando " << matrizA[llave[0]][llave[1]] << " con " << matrizB[llave[0]][llave[1]] << endl;
     if (matrizA[llave[0]][llave[1]] > matrizB[llave[0]][llave[1]]) {
@@ -66,42 +66,70 @@ int compararPosicionMatrices(int** matrizA, int** matrizB, int *llave) {
     return 0;
 }
 
-int main() {
+int llenaLLaveCerradura(int* ptrCantidadMatrices, char* ptrOpcion){
 
     int tamanioLlave, tamanioCerradura, valorCerradura, valorLlave;
     int *ptrValorCerradura = &valorCerradura;
     int *ptrValorLlave = &valorLlave;
+    int *cerraduraX = new int[*ptrCantidadMatrices];
+    int *llaveK = new int[*ptrCantidadMatrices+1];
+    string opcion(ptrOpcion);
+    cout << opcion;
+    if (opcion == "S" || opcion == "s") {//Llenar de manera aletoria
+
+    }else{//Llenar de manera Manual
+        // Llenar el array preguntando al usuario por los valores la cerradura X
+        for (int i = 0; i < *ptrCantidadMatrices; ++i) {
+            do {
+                cout << "Ingrese el valor para cerradura[" << i+1 << "]: ";
+                cin >> *ptrValorCerradura;
+                cerraduraX[i] = *ptrValorCerradura;
+            } while(*ptrValorCerradura % 2 == 0 || (*ptrValorCerradura < 3));
+        }
+        cout << "\n";
+        // Llenar el array preguntando al usuario por los valores de la clave K
+        for (int i = 0; i < *ptrCantidadMatrices+1; ++i) {
+            if (i > 1) {
+                do {
+                    cout << "Ingrese el valor para la llave[" << i+1 << "]: ";
+                    cin >> *ptrValorLlave;
+                    llaveK[i] = *ptrValorLlave;
+                } while (*ptrValorLlave > 1 || *ptrValorLlave < -1);
+            }else {
+                cout << "Ingrese el valor para la llave[" << i << "]: ";
+                cin >> *ptrValorLlave;
+                llaveK[i] = *ptrValorLlave;
+            }
+
+        }
+    }
+
+}
+
+int main() {
+
+    int tamanioLlave, tamanioCerradura;
     int cantidadMatrices;
     int *ptrCantidadMatrices = &cantidadMatrices;
-    cout << "Ingrese El tamaio de la cerradura:";
-    cin >> *ptrCantidadMatrices;
+    char opcion;
+    char *ptrOpcion = &opcion;
+    int* arrayOpen = new int[2];
+
+    // Preguntar tamaño de la cerradura (debe ser de 3 o más)
+    do {
+        cout << "Ingrese el tamaño de la cerradura (debe ser 3 o más): ";
+        cin >> *ptrCantidadMatrices;
+    } while (*ptrCantidadMatrices < 3);
     int *cerradura = new int[*ptrCantidadMatrices];
-
-    // Llenar el array preguntando al usuario por los valores la cerradura X
-    for (int i = 0; i < *ptrCantidadMatrices; ++i) {
-        do {
-            cout << "Ingrese el valor para cerradura[" << i+1 << "]: ";
-            cin >> *ptrValorCerradura;
-            cerradura[i] = *ptrValorCerradura;
-        } while(*ptrValorCerradura % 2 == 0 || (*ptrValorCerradura < 3));
-    }
-    cout << "\n";
     int *llave = new int[*ptrCantidadMatrices+1];
-    // Llenar el array preguntando al usuario por los valores de la clave K
-    for (int i = 0; i < *ptrCantidadMatrices+1; ++i) {
-        if (i > 1) {
-            do {
-                cout << "Ingrese el valor para la llave[" << i+1 << "]: ";
-                cin >> *ptrValorLlave;
-                llave[i] = *ptrValorLlave;
-            } while (*ptrValorLlave > 1 || *ptrValorLlave < -1);
-        }else {
-            cout << "Ingrese el valor para la llave[" << i << "]: ";
-            cin >> *ptrValorLlave;
-            llave[i] = *ptrValorLlave;
-        }
+    do {
+        cout << "Desea generar los datos aleatoriamente? (s/n): ";
+        cin >> *ptrOpcion;
+    } while (*ptrOpcion != 's' && *ptrOpcion != 'S' && *ptrOpcion != 'n' && *ptrOpcion != 'N');
 
-    }
+    *arrayOpen = llenaLLaveCerradura(ptrCantidadMatrices, ptrOpcion);
+
+
     cout << "\n";
 
     int*** arregloDeMatrices = new int**[*ptrCantidadMatrices];
@@ -120,9 +148,8 @@ int main() {
         //int** matrizRotada = rotarMatrizCuadrada(miMatriz, *ptrTamano);
     }
 
-    int x = 4;
-    int y = 3;
-    int condicion = -1;
+    int x = llave[0];
+    int y = llave[1];
 
     int resultado;
     bool finalizar = false;
