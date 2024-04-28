@@ -168,6 +168,7 @@ int main() {
         // Crear la matriz llamando la funcion crearMatrizCuadrada()
         int** miMatriz = crearMatrizCuadrada(cerradura[i]);
         arregloDeMatrices[i] = miMatriz;
+        //up
 
         cout << "Matriz original:\n";
         // Imprimir la matriz llamando la funcion imprimirMatriz()
