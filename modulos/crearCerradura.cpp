@@ -71,7 +71,7 @@ int* llenaCerradura(int* tamanioLlave, int* llaveK){
 
     // Llenar el array preguntando al usuario por los valores la cerradura X
     for (int i = 0; i < *tamanioLlave-1; ++i) {
-        valorInicioMatriz = 3;
+        valorInicioMatriz = 5;
         if (i == 0) {
             do {
                 cout << "Ingrese el valor Con que inice la cerradura:";
@@ -88,17 +88,20 @@ int* llenaCerradura(int* tamanioLlave, int* llaveK){
             } while(*ptrValorCerradura % 2 == 0 || (*ptrValorCerradura < 3));
         }else{
             do{
-                cout  <<  valorInicioMatriz;
-                cout << "\n";
                 int** miMatriz = crearMatrizCuadrada(valorInicioMatriz);
                 for (int j = 0; j < 4; ++j) {
-                    cout  <<  valorInicioMatriz;
-                    cout << "\n";
                     int resultado = compararPosicionMatrices(arregloDeMatrices[i-1], miMatriz, cerraduraX[i-1], valorInicioMatriz, llaveK);
-                    cout << resultado;
-                    if (resultado != llaveK[j+2]) {
+                    int siguienteValor = llaveK[i+1];
+                    cout << "valor de llave reultado "<< resultado;
+                    cout << "\n";
+                    cout << "valor de llave a comparar " << siguienteValor;
+                    cout << "\n";
+                    cout << "\n";
+                    cout << "comparativa " << (resultado != siguienteValor);
+                    cout << "\n";
+                    if (resultado != siguienteValor){
                         miMatriz = rotarMatrizCuadrada(miMatriz, cerraduraX[i]);
-                    } else if(resultado == 2){
+                    }else if(resultado == 2){
                         cout  << "etro a 2 " <<  valorInicioMatriz;
                         cout << "\n";
                         valorInicioMatriz + 2;
@@ -106,7 +109,7 @@ int* llenaCerradura(int* tamanioLlave, int* llaveK){
                         cout << "\n";
                         finalizar = false;
                         break;
-                    } else {
+                    }else{
                         finalizar = false;
                         break;
                     }
