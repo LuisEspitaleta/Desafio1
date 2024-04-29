@@ -68,10 +68,14 @@ int* llenaCerradura(int* tamanioLlave, int* llaveK){
     int *cerraduraX = new int[*tamanioLlave-1];
     int*** arregloDeMatrices = new int**[*tamanioLlave-1];
     bool finalizar = false;
+    int detener = 1;
+
 
     // Llenar el array preguntando al usuario por los valores la cerradura X
     for (int i = 0; i < *tamanioLlave-1; ++i) {
-        valorInicioMatriz = 5;
+        cout << "\n \nllenando campo: " << i+1;
+        cout << "\n \n";
+        valorInicioMatriz = 3 ;
         if (i == 0) {
             do {
                 cout << "Ingrese el valor Con que inice la cerradura:";
@@ -89,37 +93,41 @@ int* llenaCerradura(int* tamanioLlave, int* llaveK){
         }else{
             do{
                 int** miMatriz = crearMatrizCuadrada(valorInicioMatriz);
+
                 for (int j = 0; j < 4; ++j) {
                     int resultado = compararPosicionMatrices(arregloDeMatrices[i-1], miMatriz, cerraduraX[i-1], valorInicioMatriz, llaveK);
                     int siguienteValor = llaveK[i+1];
+                    cout << "valor de la matriz " << valorInicioMatriz;
+                    cout << "\n";
                     cout << "valor de llave reultado "<< resultado;
                     cout << "\n";
                     cout << "valor de llave a comparar " << siguienteValor;
                     cout << "\n";
                     cout << "\n";
-                    cout << "comparativa " << (resultado != siguienteValor);
-                    cout << "\n";
-                    if (resultado != siguienteValor){
-                        miMatriz = rotarMatrizCuadrada(miMatriz, cerraduraX[i]);
+                    if (resultado != siguienteValor && resultado != 2){
+                        cout  << "etro a 1 " <<  valorInicioMatriz;
+                        miMatriz = rotarMatrizCuadrada(miMatriz, valorInicioMatriz);
                     }else if(resultado == 2){
                         cout  << "etro a 2 " <<  valorInicioMatriz;
-                        cout << "\n";
-                        valorInicioMatriz + 2;
-                        cout  << "etro a 2 y sumo 2 "  <<  valorInicioMatriz;
                         cout << "\n";
                         finalizar = false;
                         break;
                     }else{
-                        finalizar = false;
+                        cout  << "etro a 0 " <<  valorInicioMatriz;
+                        finalizar = true;
                         break;
                     }
                     if (j == 3) {
-                        valorInicioMatriz + 2;
+                        cout  << "etro a 3 " <<  valorInicioMatriz;
                         finalizar = true;
                     }
                 }
+                valorInicioMatriz += 2;
+                arregloDeMatrices[i] = miMatriz;
+                cerraduraX[i] = valorInicioMatriz;
             } while(!finalizar);
-            cerraduraX[i] = valorInicioMatriz;
+
+
         }
     }
 

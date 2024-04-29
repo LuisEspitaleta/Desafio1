@@ -61,7 +61,8 @@ int main() {
     for (int i = 0; i < tamanioLlave; ++i) {
         cout << llaveK[i] << " "; // Usamos cout en lugar de std::cout
     }
-    for (int i = 0; i < tamanioLlave; ++i) {
+    cout << "\n \n";
+    for (int i = 0; i < tamanioLlave-1; ++i) {
         cout << cerraduraK[i] << " "; // Usamos cout en lugar de std::cout
     }
     // Preguntar tamaño de la cerradura (debe ser de 3 o más)
