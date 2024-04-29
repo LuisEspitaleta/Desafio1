@@ -89,7 +89,7 @@ int* llenaCerradura(int* tamanioLlave, int* llaveK){
                     }
                     cout << "\n"; // Salto de linea
                 }
-            } while(*ptrValorCerradura % 2 == 0 || (*ptrValorCerradura < 3));
+            } while(*ptrValorCerradura % 2 == 0 || (*ptrValorCerradura < 3) || (*ptrValorCerradura < *tamanioLlave));
         }else{
             do{
                 int** miMatriz = crearMatrizCuadrada(valorInicioMatriz);
@@ -102,13 +102,6 @@ int* llenaCerradura(int* tamanioLlave, int* llaveK){
                     }
                     int resultado = compararPosicionMatrices(arregloDeMatrices[i-1], miMatriz, cerraduraX[i-1], valorInicioMatriz, llaveK);
                     int siguienteValor = llaveK[i+1];
-                    cout << "valor de la matriz " << valorInicioMatriz;
-                    cout << "\n";
-                    cout << "valor de llave reultado "<< resultado;
-                    cout << "\n";
-                    cout << "valor de llave a comparar " << siguienteValor;
-                    cout << "\n";
-                    cout << "\n";
                     if (resultado != siguienteValor && resultado != 2){
                         cout  << "entro a 1 " <<  valorInicioMatriz;
                         cout << "\n";
@@ -137,11 +130,9 @@ int* llenaCerradura(int* tamanioLlave, int* llaveK){
                 }else{
                     valorInicioMatriz += 2;
                 }
-                if ((i > 2) && (valorInicioMatriz == (cerraduraX[i-2])-2)) {
-                    valorInicioMatriz += 4;
+                if ((i > 2) && (valorInicioMatriz == (cerraduraX[i-2]))) {
+                    valorInicioMatriz += 2;
                 }
-
-                cout  << "valor dos puestos antes " << ((cerraduraX[i-2])-2);
                 arregloDeMatrices[i] = miMatriz;
             } while(!finalizar);
 
