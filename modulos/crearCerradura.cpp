@@ -39,22 +39,22 @@ int compararPosicionMatrices(int** matrizA, int** matrizB, int tamanoA, int tama
 
     // Verificar si el campo a comparar está dentro de los límites de la matriz B (la más pequeña)
     if (fila >= tamanoB || columna >= tamanoB) {
-        cout << "Error: El campo " << llave[0] << ", " << llave[1]<< " a comparar esta fuera de los limites de la matriz B.\n";
+        cout << "Error: El campo " << fila << ", " << columna << " a comparar esta fuera de los limites de la matriz B.\n";
         return 2; // O retorna algún código de error o valor indicativo de la situación
     }
 
     // Verificar si el campo a comparar está dentro de los límites de la matriz A
     if (fila >= tamanoA || columna >= tamanoA) {
-        cout << "Advertencia: El campo " << llave[0] << ", " << llave[1]<< " a comparar esta fuera de los limites de la matriz A.\n";
+        cout << "Advertencia: El campo " << fila << ", " << columna << " a comparar esta fuera de los limites de la matriz A.\n";
         return 2;
     }
     // Verificar si la posición (i, j) de la matriz A es mayor que la de la matriz B
-    cout << "comparando " << matrizA[fila][columna] << " con " << matrizB[fila][columna] << endl;
-    if (matrizA[fila][columna] > matrizB[fila][columna]) {
+    cout << "comparando " << matrizA[fila-1][columna-1] << " con " << matrizB[fila-1][columna-1] << endl;
+    if (matrizA[fila-1][columna-1] > matrizB[fila-1][columna-1]) {
         return 1; // Devolver 1 si matriz A es mayor
     }
     // Verificar si la posición (i, j) de la matriz A es menor que la de la matriz B
-    else if (matrizA[fila][columna] < matrizB[fila][columna]) {
+    else if (matrizA[fila-1][columna-1] < matrizB[fila-1][columna-1]) {
         return -1; // Devolver -1 si matriz A es menor
     }
     // Si ninguna de las condiciones anteriores se cumple, significa que las posiciones son iguales
@@ -93,8 +93,13 @@ int* llenaCerradura(int* tamanioLlave, int* llaveK){
         }else{
             do{
                 int** miMatriz = crearMatrizCuadrada(valorInicioMatriz);
-
                 for (int j = 0; j < 4; ++j) {
+                    for (int j = 0; j < valorInicioMatriz; ++j) {
+                        for (int k = 0; k < valorInicioMatriz; ++k) {
+                            cout << miMatriz[j][k] << " "; // Usamos cout en lugar de std::cout
+                        }
+                        cout << "\n"; // Salto de linea
+                    }
                     int resultado = compararPosicionMatrices(arregloDeMatrices[i-1], miMatriz, cerraduraX[i-1], valorInicioMatriz, llaveK);
                     int siguienteValor = llaveK[i+1];
                     cout << "valor de la matriz " << valorInicioMatriz;
@@ -105,26 +110,39 @@ int* llenaCerradura(int* tamanioLlave, int* llaveK){
                     cout << "\n";
                     cout << "\n";
                     if (resultado != siguienteValor && resultado != 2){
-                        cout  << "etro a 1 " <<  valorInicioMatriz;
+                        cout  << "entro a 1 " <<  valorInicioMatriz;
+                        cout << "\n";
                         miMatriz = rotarMatrizCuadrada(miMatriz, valorInicioMatriz);
                     }else if(resultado == 2){
-                        cout  << "etro a 2 " <<  valorInicioMatriz;
+                        cout  << "entro a 2 " <<  valorInicioMatriz;
                         cout << "\n";
                         finalizar = false;
                         break;
                     }else{
-                        cout  << "etro a 0 " <<  valorInicioMatriz;
+                        cout  << "entro a 0 " <<  valorInicioMatriz;
+                        cout << "\n";
                         finalizar = true;
                         break;
                     }
                     if (j == 3) {
-                        cout  << "etro a 3 " <<  valorInicioMatriz;
+                        cout  << "entro a 3 " <<  valorInicioMatriz;
+                        cout << "\n";
                         finalizar = true;
                     }
                 }
-                valorInicioMatriz += 2;
-                arregloDeMatrices[i] = miMatriz;
+
                 cerraduraX[i] = valorInicioMatriz;
+                if (valorInicioMatriz == (cerraduraX[i-1])-2) {
+                    valorInicioMatriz += 4;
+                }else{
+                    valorInicioMatriz += 2;
+                }
+                if ((i > 2) && (valorInicioMatriz == (cerraduraX[i-2])-2)) {
+                    valorInicioMatriz += 4;
+                }
+
+                cout  << "valor dos puestos antes " << ((cerraduraX[i-2])-2);
+                arregloDeMatrices[i] = miMatriz;
             } while(!finalizar);
 
 
