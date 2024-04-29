@@ -1,10 +1,27 @@
 #include <iostream>
 #include <string>
-#include "funciones.h"
+#include "crearCerradura.h"
 
 using namespace std;
 
-int** llenaLLaveCerradura(int* ptrCantidadMatrices, int* ptrOpcion){
+int** crearMatrizCuadrada(int &tamano) {
+    int** matriz = new int*[tamano]; // Reserva de memoria para las filas
+
+    int indice = 1;
+    for (int i = 0; i < tamano; ++i) {
+        matriz[i] = new int[tamano]; // Reserva de memoria para las columnas
+        for (int j = 0; j < tamano; ++j) {
+            if ((j == tamano / 2) && (i == tamano / 2) ) {
+                matriz[i][j] = 0;
+            } else {
+                matriz[i][j] = indice ++;
+            }
+        }
+    }
+    return matriz;
+}
+
+int** llenaCerradura(int* ptrCantidadMatrices, int* ptrOpcion){
 
     int tamanioLlave, tamanioCerradura, valorCerradura, valorLlave;
     int *ptrValorCerradura = &valorCerradura;

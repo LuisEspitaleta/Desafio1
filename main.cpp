@@ -3,27 +3,13 @@
 #include <cstdlib>
 #include <ctime>
 
-#include "modulos/funciones.h"
+#include "modulos/crearCerradura.h"
+#include "modulos/crearReglaK.h"
 
 using namespace std;
 
 // Función para crear una matriz cuadrada dinámica  Punto 1
-int** crearMatrizCuadrada(int &tamano) {
-    int** matriz = new int*[tamano]; // Reserva de memoria para las filas
 
-    int indice = 1;
-    for (int i = 0; i < tamano; ++i) {
-        matriz[i] = new int[tamano]; // Reserva de memoria para las columnas
-        for (int j = 0; j < tamano; ++j) {
-            if ((j == tamano / 2) && (i == tamano / 2) ) {
-                matriz[i][j] = 0;
-            } else {
-                matriz[i][j] = indice ++;
-            }
-        }
-    }
-    return matriz;
-}
 
 // Función para imprimir la matriz
 void imprimirMatriz(int** matriz, int &tamano) {
@@ -76,10 +62,26 @@ int main() {
 
     int tamanioLlave, tamanioCerradura, opcion;
     int cantidadMatrices;
+    int *ptrTamanioLlave = &tamanioLlave;
     int *ptrCantidadMatrices = &cantidadMatrices;
     int *ptrOpcion = &opcion;
     int** arrayOpen = new int*[2];
+    // Preguntar tamaño de la llave (debe ser de 3 o más)
 
+    do {
+        cout << "Ingrese el tamaio de la llave (debe ser 3 o mas): ";
+        cin >> *ptrTamanioLlave;
+        if (*ptrTamanioLlave < 3){
+            cout << "Por favor, ingrese un valor valido (3 o mas)." << endl;
+        }
+    } while (*ptrTamanioLlave < 3);
+
+    int *llaveK = new int[*ptrTamanioLlave];
+
+    llaveK = llenaLLave(ptrTamanioLlave);
+    for (int i = 0; i < tamanioLlave; ++i) {
+        cout << llaveK[i] << " "; // Usamos cout en lugar de std::cout
+    }
     // Preguntar tamaño de la cerradura (debe ser de 3 o más)
     do {
         cout << "Ingrese el tamaio de la cerradura (debe ser 3 o mas): ";
@@ -92,9 +94,9 @@ int main() {
         cin >> *ptrOpcion;
     } while (*ptrOpcion != 1 && *ptrOpcion != 2);
 
-    arrayOpen = llenaLLaveCerradura(ptrCantidadMatrices, ptrOpcion);
-    cerradura = arrayOpen[0];
-    llave = arrayOpen[1];
+    //arrayOpen = llenaLLaveCerradura(ptrCantidadMatrices, ptrOpcion);
+    //cerradura = arrayOpen[0];
+    //llave = arrayOpen[1];
 
     cout << "\n";
 
