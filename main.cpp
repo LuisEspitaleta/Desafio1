@@ -110,7 +110,7 @@ int main() {
         cout << "tamanio del arreglo B" << (j+1)  << " es " << cerradura[j+1] << endl;
         cout <<"la llavce es " << llave[j+2] << endl;
         for (int i = 0; i < 4; ++i) {
-            int resultado = compararPosicionMatrices(arregloDeMatrices[j], matrizB, llave);
+            //int resultado = compararPosicionMatrices(arregloDeMatrices[j], matrizB, llave);
             cout << "\nComparación 1 en la posición (" << x << ", " << y << "): " << resultado << endl;
             cout << "el tamanio B" << (j+1)  << " es " << cerradura[j+1] << endl;
             imprimirMatriz(matrizB, cerradura[j+1]);
