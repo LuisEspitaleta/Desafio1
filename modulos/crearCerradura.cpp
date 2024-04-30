@@ -100,7 +100,7 @@ int* llenaCerradura(int* tamanioLlave, int* llaveK){
                 cerraduraX[i] = valorInicioMatriz;
                 int** miMatriz = crearMatrizCuadrada(cerraduraX[i]);
                 arregloDeMatrices[i] = miMatriz;              
-            } while((valorInicioMatriz % 2 == 0) || (valorInicioMatriz < 3) || (valorInicioMatriz < *tamanioLlave));
+            } while((valorInicioMatriz % 2 == 0) || (valorInicioMatriz < 3) || (valorInicioMatriz < llaveK[0]));
             imprimirMatriz(arregloDeMatrices[i], valorInicioMatriz);
             cout << "\n";
         }else{
