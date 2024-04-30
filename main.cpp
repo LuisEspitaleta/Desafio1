@@ -1,7 +1,5 @@
 #include <iostream>
 #include <string>
-#include <cstdlib>
-#include <ctime>
 
 #include "modulos/crearCerradura.h"
 #include "modulos/crearReglaK.h"
@@ -11,26 +9,11 @@ using namespace std;
 // Función para crear una matriz cuadrada dinámica  Punto 1
 
 
-
-
-
-void liberarMemoria(int*** matriz, int &size, int* tamanos) {
-    for (int i = 0; i < size; ++i) {
-        for (int j = 0; j < tamanos[i]; ++j) {
-            delete[] matriz[i][j];
-        }
-        delete[] matriz[i];
-    }
-    delete[] matriz;
-}
-
-
-
 int main() {
 
-    int tamanioLlave, tamanioCerradura, opcion;
+    int tamanioLlave, tamanioCerradura = tamanioLlave-1;
     int *ptrTamanioLlave = &tamanioLlave;
-    int *ptrOpcion = &opcion;
+    int *ptrTamanioCerradura = &tamanioCerradura;
 
     // Preguntar tamaño de la llave (debe ser de 3 o más)
     do {
@@ -42,25 +25,24 @@ int main() {
     } while (*ptrTamanioLlave < 3);
 
     int *llaveK = new int[*ptrTamanioLlave];
-    int *cerraduraK = new int[*ptrTamanioLlave-1];
+    int *cerraduraK = new int[*ptrTamanioCerradura];
 
 
     llaveK = llenaLLave(ptrTamanioLlave);
-    cerraduraK = llenaCerradura(ptrTamanioLlave, llaveK);
+    cerraduraK = llenaCerradura(ptrTamanioCerradura, llaveK);
     cout << "\nLa llave x(";
-    for (int i = 0; i < tamanioLlave; ++i) {
+    for (int i = 0; i < *ptrTamanioLlave; ++i) {
         cout << llaveK[i] << " "; // Usamos cout en lugar de std::cout
     }
     cout << ") Abrio con exito la cerradura K(";
-    for (int i = 0; i < tamanioLlave-1; ++i) {
+    for (int i = 0; i < *ptrTamanioCerradura; ++i) {
         cout << cerraduraK[i] << " "; // Usamos cout en lugar de std::cout
     } bool finalizar = false;
     cout << ")" << endl;
 
 
     // Liberar la memoria de matrices
-    //liberarMemoria(arregloDeMatrices, *ptrCantidadMatrices, cerradura);
-    //delete[] cerradura;
-    //delete[] llave;
+    delete[] cerraduraK;
+    delete[] llaveK;
     return 0;
 }

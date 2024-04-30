@@ -13,7 +13,6 @@ void imprimirMatriz(int** matriz, int &tamano) {
     }
 }
 
-
 int** crearMatrizCuadrada(int &tamano) {
     int** matriz = new int*[tamano]; // Reserva de memoria para las filas
 
@@ -72,31 +71,33 @@ int compararPosicionMatrices(int** matrizA, int** matrizB, int tamanoA, int tama
     return 0;
 }
 
-int* llenaCerradura(int* tamanioLlave, int* llaveK){
+void liberarMemoria(int*** matriz, int &size, int* tamanos) {
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < tamanos[i]; ++j) {
+            delete[] matriz[i][j];
+        }
+        delete[] matriz[i];
+    }
+    delete[] matriz;
+}
 
-    int valorCerraduraM, valorInicioMatriz;
-    int *ptrValorCerradura = &valorCerraduraM;
-    int *cerraduraX = new int[*tamanioLlave-1];
-    int*** arregloDeMatrices = new int**[*tamanioLlave-1];
+int* llenaCerradura(int* tamanioCerradura, int* llaveK){
+
+    int valorInicioMatriz;
+    int *cerraduraX = new int[*tamanioCerradura];
+    int*** arregloDeMatrices = new int**[*tamanioCerradura];
     bool finalizar = false;
-    int detener = 1;
-
 
     // Llenar el array preguntando al usuario por los valores la cerradura X
-    for (int i = 0; i < *tamanioLlave-1; ++i) {
+    for (int i = 0; i < *tamanioCerradura; ++i) {
         //cout << "\n \nllenando campo: " << i+1;
         //cout << "\n \n";
         valorInicioMatriz = 3 ;
         if (i == 0) {
             do {
-                cout << llaveK[0];
-                cout << llaveK[1];
                 if (valorInicioMatriz < llaveK[0] || valorInicioMatriz < llaveK[1]) {
                     valorInicioMatriz += 2;
                 }
-                cout << "\n";
-                cout << valorInicioMatriz;
-                cout << "\n";
                 cerraduraX[i] = valorInicioMatriz;
                 int** miMatriz = crearMatrizCuadrada(cerraduraX[i]);
                 arregloDeMatrices[i] = miMatriz;              
@@ -138,5 +139,7 @@ int* llenaCerradura(int* tamanioLlave, int* llaveK){
             } while(!finalizar);
         }
     }
+
+    liberarMemoria(arregloDeMatrices, *tamanioCerradura, cerraduraX);
     return cerraduraX;
 }
