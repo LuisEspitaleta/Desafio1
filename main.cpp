@@ -11,9 +11,8 @@ using namespace std;
 
 int main() {
 
-    int tamanioLlave, tamanioCerradura = tamanioLlave-1;
+    int tamanioLlave;
     int *ptrTamanioLlave = &tamanioLlave;
-    int *ptrTamanioCerradura = &tamanioCerradura;
 
     // Preguntar tamaño de la llave (debe ser de 3 o más)
     do {
@@ -23,6 +22,8 @@ int main() {
             cout << "Por favor, ingrese un valor valido (3 o mas)." << endl;
         }
     } while (*ptrTamanioLlave < 3);
+    int tamanioCerradura = tamanioLlave-1;
+    int *ptrTamanioCerradura = &tamanioCerradura;
 
     int *llaveK = new int[*ptrTamanioLlave];
     int *cerraduraK = new int[*ptrTamanioCerradura];
