@@ -48,18 +48,18 @@ int compararPosicionMatrices(int** matrizA, int** matrizB, int tamanoA, int tama
     int columna = llave[1];
 
     // Verificar si el campo a comparar está dentro de los límites de la matriz B (la más pequeña)
-    if (fila >= tamanoB || columna >= tamanoB) {
-        //cout << "Error: El campo " << fila << ", " << columna << " a comparar esta fuera de los limites de la matriz B.\n";
+    if (fila > tamanoB || columna > tamanoB) {
+        cout << "Error: El campo " << fila << ", " << columna << " a comparar esta fuera de los limites de la matriz B tamanio. " << tamanoB << "\n";
         return 2; //  retorna 2 indicando que la matriz no tiene ese campo porque es muy pequeña
     }
 
     // Verificar si el campo a comparar está dentro de los límites de la matriz A
-    if (fila >= tamanoA || columna >= tamanoA) {
-        //cout << "Advertencia: El campo " << fila << ", " << columna << " a comparar esta fuera de los limites de la matriz A.\n";
+    if (fila > tamanoA || columna > tamanoA) {
+        cout << "Advertencia: El campo " << fila << ", " << columna << " a comparar esta fuera de los limites de la matriz A tamanio. " << tamanoA << "\n";
         return 2; //  retorna 2 indicando que la matriz no tiene ese campo porque es muy pequeña
     }
     // Verificar si la posición (i, j) de la matriz A es mayor que la de la matriz B
-    //cout << "comparando " << matrizA[fila-1][columna-1] << " con " << matrizB[fila-1][columna-1] << endl;
+    cout << "comparando " << matrizA[fila-1][columna-1] << " con " << matrizB[fila-1][columna-1] << endl;
     if (matrizA[fila-1][columna-1] > matrizB[fila-1][columna-1]) {
         return 1; // Devolver 1 si matriz A es mayor
     }
@@ -96,48 +96,84 @@ int* llenaCerradura(int* tamanioCerradura, int* llaveK){
         if (i == 0) {
             cout << "\n";
             do {
-                //si valor del tamaño para la matris es menor que una de las posicines a comparar sumar 2
+                //si valor del tamaño para la matriz es menor que una de las posicines a comparar sumar 2
                 if (valorInicioMatriz < llaveK[0] || valorInicioMatriz < llaveK[1]) {
                     valorInicioMatriz += 2;
                 }
                 cerraduraX[i] = valorInicioMatriz;
+                // se crea una matriz 3*3 primeramente o del valor que vaya sumando 2
                 int** miMatriz = crearMatrizCuadrada(cerraduraX[i]);
                 arregloDeMatrices[i] = miMatriz;
             } while((valorInicioMatriz % 2 == 0) || (valorInicioMatriz < 3) || (valorInicioMatriz < llaveK[0]));
             imprimirMatriz(arregloDeMatrices[i], valorInicioMatriz);
             cout << "\n";
         }else{
+            // luegfo de validar la primera pisicion empieza a comparar la matriz anterio con esta nueva que se esta creacndo
+            int siguienteValor = llaveK[i+1];
+            int vueltas = 1;
+            if (siguienteValor == 0) {
+                valorInicioMatriz = cerraduraX[i-1];
+            }else if(siguienteValor == -1) {
+                valorInicioMatriz = cerraduraX[i-1] + 2;
+            }
             do{
+
+                // se crea una matriz 3*3 primeramente
                 int** miMatriz = crearMatrizCuadrada(valorInicioMatriz);
                 for (int j = 0; j < 4; ++j) {
-                    int resultado = compararPosicionMatrices(arregloDeMatrices[i-1], miMatriz, cerraduraX[i-1], valorInicioMatriz, llaveK);
-                    int siguienteValor = llaveK[i+1];
+                    // en resultado se almacenan la informacion para luego validar si la matriz aplica o no aplica para la cerradura
 
+                    int resultado = compararPosicionMatrices(arregloDeMatrices[i-1], miMatriz, cerraduraX[i-1], valorInicioMatriz, llaveK);
                     if (resultado != siguienteValor && resultado != 2){
                         miMatriz = rotarMatrizCuadrada(miMatriz, valorInicioMatriz);
                     }else if(resultado == 2){
                         finalizar = false;
                         break;
                     }else{
-                        finalizar = true;
+                        finalizar = true;                        
+                        cout << "\n Rotaciones " << vueltas <<"\n";
                         break;
                     }
-                    if (j == 3) {
-                        finalizar = true;
-                    }
-                }
+                    if (resultado != siguienteValor && j == 3) {
+                        finalizar = false;
+                        if (i == 1) {
+                            int** miMatrizTemp = arregloDeMatrices[i-1];
+                            for (int k = 0; k < 4; ++k) {
+                                // en resultado se almacenan la informacion para luego validar si la matriz aplica o no aplica para la cerradura
 
-                cerraduraX[i] = valorInicioMatriz;
-                if (valorInicioMatriz == (cerraduraX[i-1])-2) {
-                    valorInicioMatriz += 4;
-                }else{
-                    valorInicioMatriz += 2;
-                }
-                if ((i > 2) && (valorInicioMatriz == (cerraduraX[i-2]))) {
-                    valorInicioMatriz += 2;
+                                int resultado = compararPosicionMatrices(miMatrizTemp, miMatriz, cerraduraX[i-1], valorInicioMatriz, llaveK);
+                                if (resultado != siguienteValor && resultado != 2){
+                                    miMatrizTemp = rotarMatrizCuadrada(miMatrizTemp, cerraduraX[i-1]);
+                                }else{
+                                    finalizar = true;
+                                    cout << "\n Rotaciones " << vueltas <<"\n";
+                                    break;
+                                }
+                                if (resultado != siguienteValor && k == 3) {
+                                    valorInicioMatriz -= 2;
+                                    miMatriz = crearMatrizCuadrada(valorInicioMatriz);
+                                    finalizar = true;
+                                }
+                                vueltas++;
+                            }
+                        }
+                    }
+                    vueltas++;
+
+                }                
+                if (!finalizar) {
+                    if (valorInicioMatriz == (cerraduraX[i-1])-2) {
+                        valorInicioMatriz += 4;
+                    }else{
+                        valorInicioMatriz += 2;
+                    }
+                    if ((i > 2) && (valorInicioMatriz == (cerraduraX[i-2]))) {
+                        valorInicioMatriz += 2;
+                    }
                 }
                 arregloDeMatrices[i] = miMatriz;
             } while(!finalizar);
+            cerraduraX[i] = valorInicioMatriz;
             imprimirMatriz(arregloDeMatrices[i], cerraduraX[i]);
             cout << "\n";
         }
